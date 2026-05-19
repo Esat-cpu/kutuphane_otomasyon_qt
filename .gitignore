@@ -82,4 +82,4 @@ CMakeLists.txt.user*
 /build*/
 
 # db
-db.db
+sqlite.db

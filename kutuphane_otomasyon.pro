@@ -9,16 +9,28 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    kitapislemleri.cpp \
     main.cpp \
     mainwindow.cpp \
-    tiklanabilirlabel.cpp
+    oduncalma.cpp \
+    teslimetme.cpp \
+    tiklanabilirlabel.cpp \
+    uyeislemleri.cpp
 
 HEADERS += \
+    kitapislemleri.h \
     mainwindow.h \
-    tiklanabilirlabel.h
+    oduncalma.h \
+    teslimetme.h \
+    tiklanabilirlabel.h \
+    uyeislemleri.h
 
 FORMS += \
-    mainwindow.ui
+    kitapislemleri.ui \
+    mainwindow.ui \
+    oduncalma.ui \
+    teslimetme.ui \
+    uyeislemleri.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
