@@ -97,7 +97,23 @@ void UyeIslemleri::on_sil_button_clicked()
 
     const int u_no = _u_no.toInt();
 
-    QSqlQuery query("DELETE FROM uye WHERE uye_no=?");
+    QSqlQuery query;
+
+    // Teslim edilmemiş kitap kontrolü
+    query.prepare("SELECT EXISTS(SELECT 1 FROM odunc_alinan WHERE uye_no=?)");
+    query.addBindValue(u_no);
+    query.exec();
+    query.next();
+
+    if (query.value(0).toBool()) {
+        QMessageBox::critical(this, "Hata",
+            "Bu üye silinemez. Üyenin henüz teslim etmediği kitaplar vardır."
+        );
+        return;
+    }
+
+    // Silme
+    query.prepare("DELETE FROM uye WHERE uye_no=?");
     query.addBindValue(u_no);
     query.exec();
 

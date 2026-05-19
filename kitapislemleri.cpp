@@ -113,7 +113,23 @@ void KitapIslemleri::on_sil_button_clicked()
 
     const int k_no = _k_no.toInt();
 
-    QSqlQuery query("DELETE FROM kitap WHERE kitap_no=?");
+    QSqlQuery query;
+
+    // Ödünç alınma kontrolü
+    query.prepare("SELECT EXISTS(SELECT 1 FROM odunc_alinan WHERE kitap_no=?)");
+    query.addBindValue(k_no);
+    query.exec();
+    query.next();
+
+    if (query.value(0).toBool()) {
+        QMessageBox::critical(this, "Hata",
+            "Bu kitap silinemez. Bu kitap bir üyeye ödünç verilmiştir."
+        );
+        return;
+    }
+
+    // Silme
+    query.prepare("DELETE FROM kitap WHERE kitap_no=?");
     query.addBindValue(k_no);
     query.exec();
 
