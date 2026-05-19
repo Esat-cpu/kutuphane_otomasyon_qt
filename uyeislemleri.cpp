@@ -21,7 +21,7 @@ UyeIslemleri::UyeIslemleri(QWidget *parent)
     // Sürekli yenileme için timer
     QTimer* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &UyeIslemleri::yenile);
-    timer->start(2500);
+    timer->start(3000);
 
     yenile();
 }
