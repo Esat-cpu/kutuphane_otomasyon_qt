@@ -6,12 +6,19 @@
 #include "oduncalma.h"
 #include "teslimetme.h"
 
+static const QString DB_LOCATION = "../../sqlite.db";
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
+    // db
+    database_baglan();
+
+    // signal slot
     connect(ui->uye_label, &TiklanabilirLabel::clicked, this, &MainWindow::uye_islemleri);
     connect(ui->uye2_label, &TiklanabilirLabel::clicked, this, &MainWindow::uye_islemleri);
     connect(ui->kitap_label, &TiklanabilirLabel::clicked, this, &MainWindow::kitap_islemleri);
@@ -25,6 +32,18 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+
+
+void MainWindow::database_baglan() {
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(DB_LOCATION);
+
+    if (db.open())
+        ui->statusbar->showMessage("Veritabanına Bağlanıldı!");
+    else
+        ui->statusbar->showMessage("Veritabanına Bağlanılamadı!");
 }
 
 

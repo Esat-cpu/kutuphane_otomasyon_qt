@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSqlDatabase>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,5 +26,8 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+    QSqlDatabase db;
+
+    void database_baglan();
 };
 #endif // MAINWINDOW_H
