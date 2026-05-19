@@ -2,6 +2,7 @@
 #define KITAPISLEMLERI_H
 
 #include <QDialog>
+#include <QSqlDatabase>
 
 namespace Ui {
 class KitapIslemleri;
@@ -17,6 +18,8 @@ public:
 
 private:
     Ui::KitapIslemleri *ui;
+
+    void yenile();
 };
 
 #endif // KITAPISLEMLERI_H

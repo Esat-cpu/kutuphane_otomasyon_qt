@@ -2,6 +2,7 @@
 #define ODUNCALMA_H
 
 #include <QDialog>
+#include <QSqlDatabase>
 
 namespace Ui {
 class OduncAlma;
@@ -17,6 +18,8 @@ public:
 
 private:
     Ui::OduncAlma *ui;
+
+    void yenile();
 };
 
 #endif // ODUNCALMA_H

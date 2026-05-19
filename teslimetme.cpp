@@ -12,3 +12,8 @@ TeslimEtme::~TeslimEtme()
 {
     delete ui;
 }
+
+
+void TeslimEtme::yenile() {
+
+}

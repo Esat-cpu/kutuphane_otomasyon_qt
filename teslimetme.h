@@ -2,6 +2,7 @@
 #define TESLIMETME_H
 
 #include <QDialog>
+#include <QSqlDatabase>
 
 namespace Ui {
 class TeslimEtme;
@@ -17,6 +18,8 @@ public:
 
 private:
     Ui::TeslimEtme *ui;
+
+    void yenile();
 };
 
 #endif // TESLIMETME_H

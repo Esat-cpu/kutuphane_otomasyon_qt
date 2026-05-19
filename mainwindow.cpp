@@ -44,6 +44,31 @@ void MainWindow::database_baglan() {
         ui->statusbar->showMessage("Veritabanına Bağlanıldı!");
     else
         ui->statusbar->showMessage("Veritabanına Bağlanılamadı!");
+
+    /*
+    Database structure:
+        uye:
+        • uye_no (int)
+        • uye_ad (text)
+        • uye_soyad (text)
+
+        kitap:
+        • kitap_no (int)
+        • kitap_ad (text)
+        • kitap_sayisi (int)
+
+        odunc_alinan:
+        • uye_no (int)
+        • kitap_no (int)
+        • odunc_alma_tarihi(text)
+
+        odunc_teslim_edilen:
+        • uye_no (int)
+        • kitap_no (int)
+        • alma_tarihi(text)
+        • verme_tarihi(text)
+        • borc (int)
+    */
 }
 
 

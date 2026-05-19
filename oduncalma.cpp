@@ -12,3 +12,8 @@ OduncAlma::~OduncAlma()
 {
     delete ui;
 }
+
+
+void OduncAlma::yenile() {
+
+}
