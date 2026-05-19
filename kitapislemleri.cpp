@@ -28,10 +28,10 @@ KitapIslemleri::KitapIslemleri(QWidget *parent)
     ui->odunc_table->setModel(odunc_model);
     ui->teslim_table->setModel(teslim_model);
 
-    // Sürekli yenileme için timer
+    // Sürekli yenileme için Timer
     QTimer* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &KitapIslemleri::yenile);
-    timer->start(3000);
+    timer->start(6000);
 
     yenile();
 }

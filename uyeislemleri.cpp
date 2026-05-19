@@ -18,10 +18,10 @@ UyeIslemleri::UyeIslemleri(QWidget *parent)
 
     ui->tableView->setModel(model);
 
-    // Sürekli yenileme için timer
+    // Sürekli yenileme için Timer
     QTimer* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &UyeIslemleri::yenile);
-    timer->start(3000);
+    timer->start(6000);
 
     yenile();
 }
