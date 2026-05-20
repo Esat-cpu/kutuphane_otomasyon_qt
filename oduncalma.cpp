@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QSqlQuery>
+#include <QDebug>
 
 
 OduncAlma::OduncAlma(QWidget *parent)
@@ -92,27 +93,47 @@ void OduncAlma::on_oduncAl_button_clicked()
     }
 
     // Stok kontrolü
-    query.prepare("SELECT COUNT(*) FROM odunc_alinan WHERE kitap_no= :kitap_no");
+    query.prepare("SELECT kitap_sayisi FROM kitap WHERE kitap_no= :kitap_no");
     query.bindValue(":kitap_no", k_no);
     query.exec();
-    query.next();
-    const int count = query.value(0).toInt();
 
-    if (count >= secili_kitap_stok) {
-        QMessageBox::critical(this, "Hata",
-            "Bu kitap şu an mevcut değil, hepsi üyelere ödünç verilmiştir.");
+    int count = 0;
+
+    if (query.next())
+        count = query.value(0).toInt();
+
+    if (count == 0) {
+        QMessageBox::critical(this, "Hata", "Bu kitap şu anda mevcut değil!");
         return;
     }
 
     // Ödünç alınanlara ekle
+    query.exec("BEGIN TRANSACTION");
+
     query.prepare(
         "INSERT INTO odunc_alinan (uye_no, kitap_no, odunc_alma_tarihi) VALUES (?, ?, ?)"
     );
     query.addBindValue(u_no);
     query.addBindValue(k_no);
     query.addBindValue(tarih);
-    query.exec();
 
+    if (!query.exec()) {
+        query.exec("ROLLBACK");
+        qWarning() << "odunc_alinan tablosuna eklemede hata!";
+        return;
+    }
+
+    // Stok sayısını 1 düşür
+    query.prepare("UPDATE kitap SET kitap_sayisi = kitap_sayisi - 1 WHERE kitap_no=?");
+    query.addBindValue(k_no);
+
+    if (!query.exec()) {
+        query.exec("ROLLBACK");
+        qWarning() << "kitap tablosu güncellemesinde hata!";
+        return;
+    }
+
+    query.exec("COMMIT");
     yenile();
 }
 

@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QSqlQuery>
+#include <QDebug>
 
 
 TeslimEtme::TeslimEtme(QWidget *parent)
@@ -64,12 +65,28 @@ void TeslimEtme::on_pushButton_clicked()
     }
 
     QSqlQuery query;
+    query.exec("BEGIN TRANSACTION");
 
     // Ödünç alınan kayıtlardan sil
     query.prepare("DELETE FROM odunc_alinan WHERE uye_no=? AND kitap_no=?");
     query.addBindValue(u_no.toInt());
     query.addBindValue(k_no.toInt());
-    query.exec();
+
+    if (!query.exec()) {
+        query.exec("ROLLBACK");
+        qWarning() << "odunc_alinan tablosundan silmede hata!";
+        return;
+    }
+
+    // Stok güncelle
+    query.prepare("UPDATE kitap SET kitap_sayisi = kitap_sayisi + 1 WHERE kitap_no=?");
+    query.addBindValue(k_no.toInt());
+
+    if (!query.exec()) {
+        query.exec("ROLLBACK");
+        qWarning() << "kitap tablosu güncellemede hata!";
+        return;
+    }
 
     // Borç hesabı
     QDate odunc_tarih = QDate::fromString(secili_kayit_tarih, "dd.MM.yyyy");
@@ -88,7 +105,13 @@ void TeslimEtme::on_pushButton_clicked()
     query.bindValue(":alma", secili_kayit_tarih);
     query.bindValue(":verme", teslim_tarih.toString("dd.MM.yyyy"));
     query.bindValue(":borc", borc);
-    query.exec();
 
+    if (!query.exec()) {
+        query.exec("ROLLBACK");
+        qWarning() << "odunc_teslim_edilen tablosuna eklemede hata!";
+        return;
+    }
+
+    query.exec("COMMIT");
     yenile();
 }
